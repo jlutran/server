@@ -123,7 +123,12 @@ class RefreshWebcalJobTest extends TestCase {
 			->with()
 			->will($this->returnValue($client));
 
-		$this->config->expects($this->once())
+		$this->config->expects($this->at(0))
+			->method('getAppValue')
+			->with('dav', 'calendarSubscriptionRefreshRate', 'P1W')
+			->will($this->returnValue('P1W'));
+
+		$this->config->expects($this->at(1))
 			->method('getAppValue')
 			->with('dav', 'webcalAllowLocalAccess', 'no')
 			->will($this->returnValue('no'));
@@ -219,7 +224,12 @@ class RefreshWebcalJobTest extends TestCase {
 			->with()
 			->will($this->returnValue($client));
 
-		$this->config->expects($this->once())
+		$this->config->expects($this->at(0))
+			->method('getAppValue')
+			->with('dav', 'calendarSubscriptionRefreshRate', 'P1W')
+			->will($this->returnValue('P1W'));
+
+		$this->config->expects($this->at(1))
 			->method('getAppValue')
 			->with('dav', 'webcalAllowLocalAccess', 'no')
 			->will($this->returnValue('no'));

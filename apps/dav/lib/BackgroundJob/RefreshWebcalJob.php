@@ -103,8 +103,10 @@ class RefreshWebcalJob extends Job {
 		$this->fixSubscriptionRowTyping($subscription);
 
 		// if no refresh rate was configured, just refresh once a week
+		$defaultRefreshRate = $this->config->getAppValue('dav', 'calendarSubscriptionRefreshRate', 'P1W');
+		$refreshrate = $subscription[self::REFRESH_RATE] ?? $defaultRefreshRate;
+
 		$subscriptionId = $subscription['id'];
-		$refreshrate = $subscription[self::REFRESH_RATE] ?? 'P1W';
 
 		try {
 			/** @var \DateInterval $dateInterval */
