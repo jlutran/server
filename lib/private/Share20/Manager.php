@@ -289,7 +289,7 @@ class Manager implements IManager {
 
 		// Check if we actually have share permissions
 		if (!$share->getNode()->isShareable()) {
-			$message_t = $this->l->t('You are not allowed to share %s', [$share->getNode()->getPath()]);
+			$message_t = $this->l->t('You are not allowed to share %s', [$this->getVisiblePath($userFolderPath, $share->getNode()->getPath())]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
@@ -333,7 +333,7 @@ class Manager implements IManager {
 
 		// Check that we do not share with more permissions than we have
 		if ($share->getPermissions() & ~$permissions) {
-			$message_t = $this->l->t('Can’t increase permissions of %s', [$share->getNode()->getPath()]);
+			$message_t = $this->l->t('Can’t increase permissions of %s', [$this->getVisiblePath($userFolderPath, $share->getNode()->getPath())]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
@@ -357,6 +357,13 @@ class Manager implements IManager {
 				throw new GenericShareException($message_t);
 			}
 		}
+	}
+
+	protected function getVisiblePath(string $userRoot, string $path): string {
+		if (strpos($path, $userRoot) === 0) {
+			return substr($path, strlen($userRoot));
+		}
+		return $path;
 	}
 
 	/**
